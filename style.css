@@ -1,0 +1,77 @@
+:root {
+    --color-pikolinos: #8B4513;
+    --color-eco: #27ae60;
+    --bg-light: #f4f4f4;
+    --card-bg: #fdf5e6;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.header {
+    background: var(--color-pikolinos);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.product-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+.data-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 5px solid var(--color-pikolinos);
+}
+
+.badge {
+    background: var(--color-eco);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.loader {
+    text-align: center;
+    margin-top: 100px;
+    color: var(--color-pikolinos);
+}
+
+.footer-info {
+    font-size: 11px;
+    color: #666;
+    margin-top: 30px;
+    border-top: 1px dashed #ccc;
+    padding-top: 10px;
+}
