@@ -7,7 +7,8 @@ async function init() {
 
     try {
         // 2. Llamada a la API del ITI
-        const response = await fetch(`https://passport-traca.iti.es/inescop/modelo/${id}`);
+        //const response = await fetch(`https://passport-traca.iti.es/inescop/modelo/${id}`);
+        const response = await fetch(`https://corsproxy.io/?https://passport-traca.iti.es/inescop/modelo/${id}`);
         
         if (!response.ok) throw new Error("Error en la respuesta de la API");
         
@@ -68,4 +69,5 @@ async function init() {
 }
 
 // Arrancamos la aplicación
+
 init();
