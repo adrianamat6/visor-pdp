@@ -1,40 +1,38 @@
 async function init() {
-    // 1. Obtenemos el ID de la URL (ej: index.html?id=7dc449df...)
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id') || '7dc449df-00aa-4d47-b978-0858cccdd914';
-
     const app = document.getElementById('app');
 
     try {
-        // 2. Llamada a la API del ITI
-        //const response = await fetch(`https://passport-traca.iti.es/inescop/modelo/${id}`);
-        const response = await fetch(`https://corsproxy.io/?https://passport-traca.iti.es/inescop/modelo/${id}`);
+        // Intentamos la llamada a través de un proxy para evitar el bloqueo CORS directo
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://passport-traca.iti.es/inescop/modelo/${id}`)}`);
         
-        if (!response.ok) throw new Error("Error en la respuesta de la API");
-        
-        const data = await response.json();
+        if (!response.ok) throw new Error("Servidor de datos no disponible");
 
-        // 3. Procesamos los datos (Huella CO2 y Durabilidad)
+        const wrapper = await response.json();
+        // Intentamos parsear el contenido que devuelve el proxy
+        const data = JSON.parse(wrapper.contents);
+
+        // Si los datos existen, pintamos la interfaz oficial
         const emisiones = data.finVida?.impactResults?.emissionsByPhase?.values || [];
         const totalCo2 = emisiones.reduce((acc, curr) => acc + curr.value, 0);
         const unidad = data.finVida?.impactResults?.emissionsByPhase?.unit || "Kg CO2 eq";
         const durabilidad = data.durabilidad?.durability || 0;
 
-        // 4. Renderizamos el HTML
         app.innerHTML = `
             <div class="header">
                 <h1>PIKOLINOS</h1>
                 <small>PASAPORTE DIGITAL DE PRODUCTO</small>
             </div>
             <div class="content">
-                <img src="${data.modelo.image}" class="product-img" alt="Calzado Pikolinos">
+                <img src="${data.modelo.image}" class="product-img" alt="Pikolinos Modelo">
                 <span class="badge">✓ Autenticidad Verificada</span>
                 <h2>${data.modelo.name}</h2>
-                <p style="color: #666;">Fabricado por: <b>${data.modelo.company}</b></p>
+                <p style="color: #666; margin-bottom: 25px;">Fabricante: <b>${data.modelo.company}</b></p>
                 
                 <div class="data-card">
                     <strong>🌱 Huella Ambiental Total</strong>
-                    <p style="font-size: 26px; margin: 5px 0; color: var(--color-eco); font-weight: bold;">
+                    <p style="font-size: 26px; margin: 5px 0; color: #27ae60; font-weight: bold;">
                         ${totalCo2.toFixed(2)} <span style="font-size: 14px;">${unidad}</span>
                     </p>
                 </div>
@@ -48,26 +46,26 @@ async function init() {
 
                 <div class="footer-info">
                     <p><b>DID:</b> did:ethr:0x3d47f3a03fea74b605e9b37d529384cbc7955254</p>
-                    <p>Este pasaporte digital cumple con el Reglamento Europeo (UE) 2024/1781 (ESPR).</p>
-                    <p style="text-align: center; color: var(--color-pikolinos); font-weight: bold; margin-top: 15px;">
-                        TRAZABILIDAD GARANTIZADA POR TRACA BLOCKCHAIN
+                    <p>Cumple con el Reglamento (UE) 2024/1781 (ESPR).</p>
+                    <p style="text-align: center; color: #8B4513; font-weight: bold; margin-top: 15px; border-top: 1px solid #eee; pt-2">
+                        TRAZABILIDAD BLOCKCHAIN
                     </p>
                 </div>
             </div>
         `;
 
     } catch (error) {
-        console.error(error);
+        // Si falla, mostramos un error limpio y técnico
         app.innerHTML = `
+            <div class="header"><h1>PIKOLINOS</h1></div>
             <div class="content" style="text-align:center; margin-top: 50px;">
-                <h2>❌ Error de Conexión</h2>
-                <p>No se ha podido recuperar la información del Pasaporte Digital.</p>
-                <p><small>${error.message}</small></p>
+                <div style="font-size: 50px;">⚠️</div>
+                <h2>Servicio no disponible</h2>
+                <p style="color: #666;">No se ha podido establecer conexión con el repositorio de datos del ITI.</p>
+                <p style="font-size: 11px; color: #999; margin-top: 20px;">Error: Acceso restringido (CORS/Network)</p>
             </div>
         `;
     }
 }
-
-// Arrancamos la aplicación
 
 init();
