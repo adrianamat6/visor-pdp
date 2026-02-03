@@ -300,6 +300,23 @@ function vistaDistribucion(data) {
     return fragment;
 }
 
+
+// ------------------------------------------------------------------------------------
+function vistaUso(data) {
+    const fragment = document.createDocumentFragment();
+
+    const card = document.createElement('div');
+    card.className = 'card-container';
+    card.innerHTML = `<h2>VIDA ÚTIL Y DURABILIDAD</h2>`;
+
+    // Acceso directo a las rutas que confirmaste en consola
+    card.appendChild(crearGrupoInfo('Nº DE USOS ESTIMADOS:', `${(data.durabilidad.durability).toFixed(2)} usos`));
+    card.appendChild(crearGrupoInfo('DURABILIDAD DE REFERENCIA:', `${(data.durabilidad.durationService).toFixed(2)} usos`));
+
+    fragment.appendChild(card);
+    return fragment;
+}
+
 // ------------------------------------------------------------------------------------
 // VISTA: GENÉRICA PARA LAS DEMÁS (Fabricación, Uso, etc.)
 function vistaSimple(titulo, info) {
@@ -327,8 +344,11 @@ export function PintarDatos(dataModelo, pestaña = "GENERAL") {
             contenido = vistaFabricacion(dataModelo);
             break;
         case "DISTRIBUCIÓN":
-            contenido = vistaDistribucion(dataModelo) ;
+            contenido = vistaDistribucion(dataModelo);
             break;
+        case "USO":
+            contenido =vistaUso(dataModelo); 
+            break    
         default:
             contenido = vistaSimple(pestaña, "Sección en desarrollo...");
     }

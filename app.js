@@ -16,7 +16,7 @@ async function iniciarApp() {
     }
 
 
-    console.log(dataModelo.durabilidad)
+    console.log(dataModelo.durabilidad.durability)
 
     // console.log(dataModelo.lote.embalaje.components)
 
