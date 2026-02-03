@@ -2,32 +2,18 @@
 import { fetchModelo } from './data.js';
 import { initEventosPestañas } from './events.js';
 import { PintarDatos } from './ui.js';
-import { calcularTotalEmisiones } from './calculator.js';
 
+async function iniciarApp() {
+    // 1. Obtenemos datos
+    const dataModelo = await fetchModelo();
 
-// 1. Inicializamos los eventos de las pestañas
-const contenedorPestañas = initEventosPestañas(); 
+    if (dataModelo) {
+        // 2. Pintamos la primera vez (General)
+        PintarDatos(dataModelo, "GENERAL");
 
-// 2. Llamamos a la función (con paréntesis) y esperamos los datos
-// Nota: 'await' fuera de una función solo funciona en archivos type="module"
-const dataModelo = await fetchModelo();
+        // 3. Inicializamos los eventos pasándole el JSON cargado
+        initEventosPestañas(dataModelo);
+    }
+}
 
-console.log(dataModelo);
-
-
-
-
-
-const totalEmisiones = calcularTotalEmisiones(dataModelo.finVida.impactResults)
-console.log(totalEmisiones); 
-
-const contenedorTab = document.querySelector('#tab-content');
-
-
-PintarDatos(dataModelo)
-console.log('nodoElemento',contenedorTab)
-
-
-
-
-
+iniciarApp();

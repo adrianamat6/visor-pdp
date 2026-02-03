@@ -1,18 +1,18 @@
-// event.js
+// events.js
+import { PintarDatos } from './ui.js';
 
-export function initEventosPestañas() {
+export function initEventosPestañas(dataModelo) {
     const contenedorPestañas = document.querySelectorAll('.tab-item');
 
-    for (let nodoPestaña of contenedorPestañas) {
+    contenedorPestañas.forEach(nodoPestaña => {
         nodoPestaña.addEventListener('click', function() {
-            
-            // 1. Quitamos la clase 'active' a todas las pestañas primero
+            // 1. UI Visual (pestañas)
             contenedorPestañas.forEach(tab => tab.classList.remove('active'));
-
-            // 2. Se la añadimos a la pestaña que acabamos de pulsar
             this.classList.add('active'); 
-        });
-    }
 
-    return contenedorPestañas; 
+            // 2. DISPARAR EL RENDER: Obtenemos el texto de la pestaña
+            const nombrePestaña = this.textContent.trim();
+            PintarDatos(dataModelo, nombrePestaña);
+        });
+    });
 }

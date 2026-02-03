@@ -1,73 +1,90 @@
 // ui.js
-
 import { calcularTotalEmisiones } from './calculator.js';
 
-export function PintarDatos(dataModelo) {
-    const contenedorTab = document.querySelector('#tab-content');
-    contenedorTab.innerHTML = ''; 
+const contenedorTab = document.querySelector('#tab-content');
 
+// --- TUS COMPONENTES DE UI ---
+
+const crearGrupoInfo = (label, valor) => {
+    const div = document.createElement('div');
+    div.className = 'info-group';
+    div.innerHTML = `<span class="label-text">${label}</span><span class="value-text">${valor}</span>`;
+    return div;
+};
+
+// VISTA: GENERAL
+function vistaGeneral(data) {
     const card = document.createElement('div');
     card.className = 'card-container';
 
-    // Función auxiliar que ya tenías (la mantenemos igual)
-    const crearGrupoInfo = (label, valor) => {
-        const div = document.createElement('div');
-        div.className = 'info-group';
-        const spanLabel = document.createElement('span');
-        spanLabel.className = 'label-text';
-        spanLabel.textContent = label;
-        const spanValue = document.createElement('span');
-        spanValue.className = 'value-text';
-        spanValue.textContent = valor;
-        div.appendChild(spanLabel);
-        div.appendChild(spanValue);
-        return div;
-    };
+    const fechaLegible = new Date(data.modelo.studyPeriodFinish).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+    const totalCO2 = calcularTotalEmisiones(data.finVida.impactResults);
 
-    // --- FORMATEO DE DATOS ---
+    card.appendChild(crearGrupoInfo('COMPAÑÍA:', data.modelo.company));
+    card.appendChild(crearGrupoInfo('MODELO:', data.modelo.name));
+    
+    const img = document.createElement('img');
+    img.src = data.modelo.image;
+    img.className = 'card-image';
+    card.appendChild(img);
 
-    // 1. Fecha: Convertir "2024-12-30T..." a algo legible (30/12/2024)
-    const fechaISO = dataModelo.modelo.studyPeriodFinish;
-    const fechaLegible = new Date(fechaISO).toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
+    card.appendChild(crearGrupoInfo('PESO TOTAL:', `${data.modelo.totalWeightPair} g`));
+    card.appendChild(crearGrupoInfo('EMISIONES TOTALES:', `${totalCO2} kg CO₂ eq`));
+    card.appendChild(crearGrupoInfo('FECHA:', fechaLegible));
+
+    return card;
+}
+
+// VISTA: COMPONENTES (Ejemplo de cómo listar cosas)
+function vistaComponentes(data) {
+    const card = document.createElement('div');
+    card.className = 'card-container';
+    card.innerHTML = `<h3>Listado de Componentes</h3><br>`;
+
+    // Recorremos los componentes (ajusta según el nombre real en tu JSON)
+    // Asumiendo que data.componentes es un array
+    const componentes = data.modelo.components || []; 
+    
+    if(componentes.length === 0) {
+        card.innerHTML += `<p>No hay componentes registrados.</p>`;
+    }
+
+    componentes.forEach(comp => {
+        card.appendChild(crearGrupoInfo(comp.name, `${comp.weight} g - ${comp.material}`));
     });
 
-    // 2. Peso: Usamos totalWeightPair y aseguramos decimales
-    const peso = `${dataModelo.modelo.totalWeightPair} g`;
+    return card;
+}
 
-    // 3. Emisiones: Usando tu función del calculator.js
-    const totalCO2 = calcularTotalEmisiones(dataModelo.finVida.impactResults);
+// VISTA: GENÉRICA PARA LAS DEMÁS (Fabricación, Uso, etc.)
+function vistaSimple(titulo, info) {
+    const card = document.createElement('div');
+    card.className = 'card-container';
+    card.innerHTML = `<h3>${titulo}</h3><p style="margin-top:10px">${info}</p>`;
+    return card;
+}
 
-    // --- CREACIÓN DE ELEMENTOS ---
+// --- EL DISTRIBUIDOR (La función que exportamos) ---
+export function PintarDatos(dataModelo, pestaña = "GENERAL") {
+    contenedorTab.innerHTML = ''; 
+    let contenido;
 
-    const grupoCompany = crearGrupoInfo('COMPAÑÍA:', dataModelo.modelo.company);
-    const grupoModelo = crearGrupoInfo('MODELO:', dataModelo.modelo.name);
-    
-    // Imagen
-    const img = document.createElement('img');
-    img.src = dataModelo.modelo.image;
-    img.alt = dataModelo.modelo.name;
-    img.className = 'card-image';
+    switch (pestaña) {
+        case "GENERAL":
+            contenido = vistaGeneral(dataModelo);
+            break;
+        case "COMPONENTES":
+            contenido = vistaComponentes(dataModelo);
+            break;
+        case "FABRICACIÓN":
+            contenido = vistaSimple("Proceso de Fabricación", "Aquí irán los datos de energía y procesos de montaje.");
+            break;
+        case "DISTRIBUCIÓN":
+            contenido = vistaSimple("Distribución", "Datos logísticos y de transporte.");
+            break;
+        default:
+            contenido = vistaSimple(pestaña, "Sección en desarrollo...");
+    }
 
-    // Nuevos campos solicitados
-    const grupoAnalisis = crearGrupoInfo('TIPO DE ANÁLISIS:', dataModelo.modelo.limitType);
-    const grupoCalzado = crearGrupoInfo('TIPO DE CALZADO:', dataModelo.modelo.productType);
-    const grupoPeso = crearGrupoInfo('PESO TOTAL:', peso);
-    const grupoEmisiones = crearGrupoInfo('EMISIONES TOTALES:', `${totalCO2} kg CO₂ eq`);
-    const grupoFecha = crearGrupoInfo('FECHA DE REGISTRO:', fechaLegible);
-
-    // --- ENSAMBLAR ---
-    // El orden aquí define cómo se ve en la tarjeta de arriba a abajo
-    card.appendChild(grupoCompany);
-    card.appendChild(grupoModelo);
-    card.appendChild(img);
-    card.appendChild(grupoAnalisis);
-    card.appendChild(grupoCalzado);
-    card.appendChild(grupoPeso);
-    card.appendChild(grupoEmisiones);
-    card.appendChild(grupoFecha);
-
-    contenedorTab.appendChild(card);
+    contenedorTab.appendChild(contenido);
 }
