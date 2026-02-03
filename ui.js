@@ -310,21 +310,35 @@ function vistaUso(data) {
     card.innerHTML = `<h2>VIDA ÚTIL Y DURABILIDAD</h2>`;
 
     // Acceso directo a las rutas que confirmaste en consola
-    card.appendChild(crearGrupoInfo('Nº DE USOS ESTIMADOS:', `${(data.durabilidad.durability).toFixed(2)} usos`));
-    card.appendChild(crearGrupoInfo('DURABILIDAD DE REFERENCIA:', `${(data.durabilidad.durationService).toFixed(2)} usos`));
+    card.appendChild(crearGrupoInfo('Nº DE USOS ESTIMADOS:', `${(data.durabilidad.durability).toFixed(1)} usos`));
+    card.appendChild(crearGrupoInfo('DURABILIDAD DE REFERENCIA:', `${(data.durabilidad.durationService).toFixed(1)} usos`));
 
     fragment.appendChild(card);
     return fragment;
 }
 
+
 // ------------------------------------------------------------------------------------
-// VISTA: GENÉRICA PARA LAS DEMÁS (Fabricación, Uso, etc.)
-function vistaSimple(titulo, info) {
+function vistaFinVida(dataModelo) { // <--- Usamos dataModelo para que coincida con el resto
+    const fragment = document.createDocumentFragment();
+
     const card = document.createElement('div');
     card.className = 'card-container';
-    card.innerHTML = `<h3>${titulo}</h3><p style="margin-top:10px">${info}</p>`;
-    return card;
+    card.innerHTML = `<h2>FIN DE VIDA</h2>`;
+
+    // 1. Tipo de fin de vida: dataModelo.finVida.endOfLifeScenario.type
+    const tipoFinVida = dataModelo.finVida.endOfLifeScenario.type;
+    card.appendChild(crearGrupoInfo('ESCENARIO:', tipoFinVida));
+
+    // 2. Emisiones asociadas: dataModelo.finVida.impactResults.emissionsByPhase.values[3]
+    // Según tu log, este objeto tiene la propiedad .value
+    const emisionesFin = dataModelo.finVida.impactResults.emissionsByPhase.values[3].value;
+    card.appendChild(crearGrupoInfo('EMISIONES ASOCIADAS:', `${emisionesFin.toFixed(2)} kg CO₂ eq`));
+
+    fragment.appendChild(card);
+    return fragment;
 }
+
 
 // ------------------------------------------------------------------------------------
 
@@ -349,8 +363,12 @@ export function PintarDatos(dataModelo, pestaña = "GENERAL") {
         case "USO":
             contenido =vistaUso(dataModelo); 
             break    
+        case "FIN DE VIDA": 
+            contenido = vistaFinVida(dataModelo)
+            break
+
         default:
-            contenido = vistaSimple(pestaña, "Sección en desarrollo...");
+            contenido = vistaGeneral(dataModelo);
     }
 
     contenedorTab.appendChild(contenido);

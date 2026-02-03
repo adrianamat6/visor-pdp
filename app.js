@@ -16,7 +16,7 @@ async function iniciarApp() {
     }
 
 
-    console.log(dataModelo.durabilidad.durability)
+    console.log(dataModelo.finVida.impactResults.emissionsByPhase.values[3])
 
     // console.log(dataModelo.lote.embalaje.components)
 
