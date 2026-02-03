@@ -16,7 +16,7 @@ async function iniciarApp() {
     }
 
 
-    console.log(dataModelo.finVida.waterConsumption.totalConsumed)
+    console.log(dataModelo.durabilidad)
 
     // console.log(dataModelo.lote.embalaje.components)
 

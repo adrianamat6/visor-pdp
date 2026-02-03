@@ -193,8 +193,8 @@ function vistaFabricacion(data) {
     if (valorCO2 !== undefined) {
         const cardTotal = document.createElement('div');
         cardTotal.className = 'card-container';
-        cardTotal.style.backgroundColor = '#e3f2fd'; // Azul claro
-        cardTotal.style.border = '1px solid #bbdefb';
+        cardTotal.style.backgroundColor = '#e8f5e9'; // Verde muy clarito (eco)
+        cardTotal.style.border = '1px solid #c8e6c9';
         cardTotal.style.marginTop = '20px';
 
         const infoEmisiones = crearGrupoInfo(
@@ -212,7 +212,95 @@ function vistaFabricacion(data) {
     return fragment;
 }
 // ------------------------------------------------------------------------------------
+function vistaDistribucion(data) {
+    const fragment = document.createDocumentFragment();
+    
+    // Accedemos a la ruta que indicaste (asumimos que puede ser un array de varias ventas)
+    const ventas = data.lote?.distribucion?.ventas || [];
 
+    if (ventas.length === 0) {
+        const cardEmpty = document.createElement('div');
+        cardEmpty.className = 'card-container';
+        cardEmpty.innerHTML = `<p>No hay datos de distribución registrados.</p>`;
+        return cardEmpty;
+    }
+
+    ventas.forEach((v, index) => {
+        const card = document.createElement('div');
+        card.className = 'card-container';
+        card.style.marginBottom = '20px';
+
+        // Título: Si hay más de una venta, las enumeramos
+        card.innerHTML = `<h2>LOGÍSTICA DE ENTREGA ${ventas.length > 1 ? index + 1 : ''}</h2>`;
+
+        // Información de destino
+        card.appendChild(crearGrupoInfo('DESTINO:', v.destination));
+        card.appendChild(crearGrupoInfo('CLIENTE:', v.client));
+        card.appendChild(crearGrupoInfo('DISTANCIA RECORRIDA:', `${v.distance} km`));
+
+        // Detalle del Vehículo de Transporte
+        if (v.transport) {
+            const transContainer = document.createElement('div');
+            transContainer.style.marginTop = '15px';
+            transContainer.style.padding = '12px';
+            transContainer.style.backgroundColor = '#fff7ed'; // Naranja muy suave
+            transContainer.style.border = '1px solid #ffedd5';
+
+
+            transContainer.style.borderRadius = '8px';
+
+            const transLabel = document.createElement('span');
+            transLabel.className = 'label-text';
+            transLabel.textContent = 'ESPECIFICACIONES DEL TRANSPORTE:';
+            transContainer.appendChild(transLabel);
+
+            const transDesc = document.createElement('p');
+            transDesc.style.fontSize = '14px';
+            transDesc.style.color = '#9a3412'; // Marrón/Naranja oscuro
+            
+            transDesc.style.marginTop = '5px';
+            transDesc.innerHTML = `
+                <strong>${v.transport.materialType}</strong><br>
+                ${v.transport.specification} (${v.transport.materialSubType})
+            `;
+            
+            transContainer.appendChild(transDesc);
+            card.appendChild(transContainer);
+        }
+
+        fragment.appendChild(card);
+    });
+
+    // --- RESUMEN DE EMISIONES ETAPA 3 (Distribución) ---
+    // En el estándar ACV, la posición [2] suele ser Distribución/Transporte
+    const valorCO2 = data.finVida?.impactResults?.emissionsByPhase?.values[2]?.value;
+
+    if (valorCO2 !== undefined) {
+        const cardTotal = document.createElement('div');
+        cardTotal.className = 'card-container';
+        // cardTotal.style.backgroundColor = '#fffbeb'; // Ámbar claro
+        // cardTotal.style.border = '1px solid #fef3c7';
+        cardTotal.style.backgroundColor = '#e8f5e9'; // Verde muy clarito (eco)
+        cardTotal.style.border = '1px solid #c8e6c9';
+        
+        cardTotal.style.marginTop = '20px';
+
+        const infoEmisiones = crearGrupoInfo(
+            'HUELA DE CARBONO DEL TRANSPORTE:', 
+            `${valorCO2.toFixed(2)} kg CO₂ eq`
+        );
+        
+        infoEmisiones.querySelector('.value-text').style.fontSize = '22px';
+        infoEmisiones.querySelector('.value-text').style.color = '#2e7d32'; // Ámbar oscuro
+
+        cardTotal.appendChild(infoEmisiones);
+        fragment.appendChild(cardTotal);
+    }
+
+    return fragment;
+}
+
+// ------------------------------------------------------------------------------------
 // VISTA: GENÉRICA PARA LAS DEMÁS (Fabricación, Uso, etc.)
 function vistaSimple(titulo, info) {
     const card = document.createElement('div');
@@ -239,7 +327,7 @@ export function PintarDatos(dataModelo, pestaña = "GENERAL") {
             contenido = vistaFabricacion(dataModelo);
             break;
         case "DISTRIBUCIÓN":
-            contenido = vistaSimple("Distribución", "Datos logísticos y de transporte.");
+            contenido = vistaDistribucion(dataModelo) ;
             break;
         default:
             contenido = vistaSimple(pestaña, "Sección en desarrollo...");
