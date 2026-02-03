@@ -123,11 +123,94 @@ function vistaComponentes(data) {
     return fragment;
 }
 
+// -----------------------------------------------------------------------------------
 
+function vistaFabricacion(data) {
+    const fragment = document.createDocumentFragment();
+    
+    // Referencia rápida a la ruta de fabricación que has confirmado
+    const fab = data.lote?.fabricacion || {};
 
+    // --- 1. ENERGÍA (kWh) ---
+    if (fab.consumoEnergia && fab.consumoEnergia.length > 0) {
+        const card = document.createElement('div');
+        card.className = 'card-container';
+        card.innerHTML = `<h2>ENERGÍA CONSUMIDA</h2>`;
+        
+        fab.consumoEnergia.forEach(e => {
+            card.appendChild(crearGrupoInfo('TIPO DE RED:', e.energyType));
+            card.appendChild(crearGrupoInfo('SUBTIPO:', e.energySubtype));
+            card.appendChild(crearGrupoInfo('CANTIDAD:', `${e.amount} kWh`)); // <--- Dato de tu log
+        });
+        fragment.appendChild(card);
+    }
 
+    // --- 2. QUÍMICOS ---
+    if (fab.consumoQuimicos && fab.consumoQuimicos.length > 0) {
+        const card = document.createElement('div');
+        card.className = 'card-container';
+        card.innerHTML = `<h2>PRODUCTOS QUÍMICOS</h2>`;
+        
+        fab.consumoQuimicos.forEach(q => {
+            card.appendChild(crearGrupoInfo('SUSTANCIA:', q.chemicalType));
+            card.appendChild(crearGrupoInfo('DETALLE:', q.chemicalSubtype));
+            card.appendChild(crearGrupoInfo('CANTIDAD:', `${q.amount} kg`)); 
+        });
+        fragment.appendChild(card);
+    }
 
+    // --- 3. AGUA (m³) ---
+    // Según tu log: dataModelo.finVida.waterConsumption.totalConsumed
+    const water = data.finVida?.waterConsumption;
+    if (water) {
+        const cardAgua = document.createElement('div');
+        cardAgua.className = 'card-container';
+        cardAgua.innerHTML = `<h2>CONSUMO DE AGUA</h2>`;
+        
+        cardAgua.appendChild(crearGrupoInfo('TOTAL CONSUMIDO:', `${water.totalConsumed} m³`));
+        cardAgua.appendChild(crearGrupoInfo('ORIGEN DEL DATO:', water.dataSourceTotalConsumed));
+        
+        fragment.appendChild(cardAgua);
+    }
 
+    // --- 4. RESIDUOS ---
+    if (fab.wasteGenerated && fab.wasteGenerated.length > 0) {
+        const card = document.createElement('div');
+        card.className = 'card-container';
+        card.innerHTML = `<h2>RESIDUOS GENERADOS</h2>`;
+        
+        fab.wasteGenerated.forEach(w => {
+            card.appendChild(crearGrupoInfo('TIPO:', w.wasteType));
+            card.appendChild(crearGrupoInfo('DESTINO:', w.destinationSubtype));
+            card.appendChild(crearGrupoInfo('CANTIDAD:', `${w.amount} g`));
+        });
+        fragment.appendChild(card);
+    }
+
+    // --- 5. RESUMEN DE EMISIONES ETAPA 2 (Fabricación) ---
+    const valorCO2 = data.finVida?.impactResults?.emissionsByPhase?.values[1]?.value;
+
+    if (valorCO2 !== undefined) {
+        const cardTotal = document.createElement('div');
+        cardTotal.className = 'card-container';
+        cardTotal.style.backgroundColor = '#e3f2fd'; // Azul claro
+        cardTotal.style.border = '1px solid #bbdefb';
+        cardTotal.style.marginTop = '20px';
+
+        const infoEmisiones = crearGrupoInfo(
+            'TOTAL EMISIONES FABRICACIÓN:', 
+            `${valorCO2.toFixed(2)} kg CO₂ eq`
+        );
+        
+        infoEmisiones.querySelector('.value-text').style.fontSize = '22px';
+        infoEmisiones.querySelector('.value-text').style.color = '#2e7d32'; 
+
+        cardTotal.appendChild(infoEmisiones);
+        fragment.appendChild(cardTotal);
+    }
+
+    return fragment;
+}
 // ------------------------------------------------------------------------------------
 
 // VISTA: GENÉRICA PARA LAS DEMÁS (Fabricación, Uso, etc.)
@@ -153,7 +236,7 @@ export function PintarDatos(dataModelo, pestaña = "GENERAL") {
             contenido = vistaComponentes(dataModelo);
             break;
         case "FABRICACIÓN":
-            contenido = vistaSimple("Proceso de Fabricación", "Aquí irán los datos de energía y procesos de montaje.");
+            contenido = vistaFabricacion(dataModelo);
             break;
         case "DISTRIBUCIÓN":
             contenido = vistaSimple("Distribución", "Datos logísticos y de transporte.");

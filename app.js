@@ -16,7 +16,8 @@ async function iniciarApp() {
     }
 
 
-    console.log(dataModelo.finVida.impactResults.emissionsByPhase.values[0].value)
+    console.log(dataModelo.finVida.waterConsumption.totalConsumed)
+
     // console.log(dataModelo.lote.embalaje.components)
 
     // console.log(dataModelo.durabilidad)
