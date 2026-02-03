@@ -8,11 +8,11 @@ async function iniciarApp() {
     const dataModelo = await fetchModelo();
 
     if (dataModelo) {
-        // 2. Pintamos la primera vez (General)
+        // 1. Pintamos GENERAL por primera vez
         PintarDatos(dataModelo, "GENERAL");
 
-        // 3. Inicializamos los eventos pasándole el JSON cargado
-        initEventosPestañas(dataModelo);
+        // 2. Inicializamos eventos PASÁNDOLE los datos
+        initEventosPestañas(dataModelo); 
     }
 
 

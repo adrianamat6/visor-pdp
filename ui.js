@@ -45,48 +45,56 @@ function vistaGeneral(data) {
 // ------------------------------------------------------------------------------------
 // VISTA: COMPONENTES (Ejemplo de cómo listar cosas)
 function vistaComponentes(data) {
-    const contenedorFragment = document.createDocumentFragment();
-
-    // Accedemos a la ruta que indicaste
-    const componentes = data.lote?.embalaje?.components || [];
+    const fragment = document.createDocumentFragment();
+    
+    // REVISIÓN DE RUTA: 
+    // Intentamos buscar en 'lote.embalaje.components' o directamente en 'components'
+    const componentes = data.lote?.embalaje?.components || data.components || [];
 
     if (componentes.length === 0) {
-        const emptyCard = document.createElement('div');
-        emptyCard.className = 'card-container';
-        emptyCard.innerHTML = `<p>No hay componentes registrados en el embalaje.</p>`;
-        return emptyCard;
+        const errorCard = document.createElement('div');
+        errorCard.className = 'card-container';
+        errorCard.innerHTML = `<p>No se han encontrado componentes en este modelo.</p>`;
+        return errorCard;
     }
 
-    // Recorremos cada componente del array
     componentes.forEach((comp, index) => {
         const card = document.createElement('div');
         card.className = 'card-container';
-        card.style.marginBottom = '10px'; // Un poco de aire entre componentes
+        card.style.marginBottom = '20px';
 
-        // Título del componente (Número y Nombre)
-        const titulo = document.createElement('h2');
-        titulo.style.fontSize = '16px';
-        titulo.style.marginBottom = '15px';
-        titulo.style.color = '#000';
-        titulo.textContent = `${index + 1}. ${comp.name}`;
-        card.appendChild(titulo);
-
-        // Información detallada usando tu función auxiliar crearGrupoInfo
-        card.appendChild(crearGrupoInfo('TIPO:', comp.componentType || 'N/A'));
+        card.innerHTML = `<h2>${index + 1}. ${comp.name}</h2>`;
+        
+        card.appendChild(crearGrupoInfo('TIPO:', comp.componentType));
         card.appendChild(crearGrupoInfo('PESO:', `${comp.componentWeight} g`));
-        card.appendChild(crearGrupoInfo('PROVEEDOR:', comp.providerName || 'Desconocido'));
-        card.appendChild(crearGrupoInfo('DISTANCIA TRANSPORTE:', `${comp.transportDistanceProvider} km`));
+        card.appendChild(crearGrupoInfo('PROVEEDOR:', comp.providerName));
 
-        // Opcional: Si hay material, podrías añadirlo aquí si existe en el JSON
-        if (comp.materialName) {
-            card.appendChild(crearGrupoInfo('MATERIAL:', comp.materialName));
+        // Materiales
+        if (comp.materials && comp.materials.length > 0) {
+            const matDiv = document.createElement('div');
+            matDiv.style.background = '#f9f9f9';
+            matDiv.style.padding = '10px';
+            matDiv.style.marginTop = '10px';
+            matDiv.innerHTML = `<span class="label-text">COMPOSICIÓN:</span>`;
+            
+            comp.materials.forEach(m => {
+                matDiv.innerHTML += `
+                    <p style="font-size:14px; margin-top:5px;">
+                        • ${m.materialType} - ${m.materialSubtype} (${m.materialPercentage}%)
+                    </p>`;
+            });
+            card.appendChild(matDiv);
         }
 
-        contenedorFragment.appendChild(card);
+        fragment.appendChild(card);
     });
 
-    return contenedorFragment;
+    return fragment;
 }
+
+
+
+
 
 
 // ------------------------------------------------------------------------------------
