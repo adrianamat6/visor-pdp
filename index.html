@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador PDP | Pikolinos & TRACA</title>
+    <title id="titulo"></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container" id="app">
-    <div class="loader">
-        <h2>Cargando Pasaporte Digital...</h2>
-    </div>
-</div>
+<header>
+    <img src="./img/img_cabecera.png" class="img-logo">
+</header>
 
-<script src="script.js"></script>
+<nav class="tabs-container">
+    <ul class="tabs-list">
+        <li class="tab-item active">GENERAL</li>
+        <li class="tab-item ">COMPONENTES</li>
+        <li class="tab-item">FABRICACIÓN</li>
+        <li class="tab-item">DISTRIBUCIÓN</li>
+        <li class="tab-item">USO</li>
+        <li class="tab-item">FIN DE VIDA</li>
+    </ul>
+</nav>
+
+<main id="tab-content" class="content-container">
+    <!-- Aquí el JS meterá la información -->
+
+</main>
+
+
+<script type = "module" src="app.js"></script>
 </body>
 </html>
