@@ -14,6 +14,14 @@ async function iniciarApp() {
         // 3. Inicializamos los eventos pasándole el JSON cargado
         initEventosPestañas(dataModelo);
     }
+
+
+    console.log(dataModelo.lote)
+    console.log(dataModelo.lote.embalaje.components)
+
+    console.log(dataModelo.durabilidad)
+    console.log(dataModelo.finVida)
+
 }
 
 iniciarApp();
