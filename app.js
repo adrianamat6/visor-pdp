@@ -2,6 +2,7 @@
 import { fetchModelo } from './data.js';
 import { initEventosPestañas } from './events.js';
 import { PintarDatos } from './ui.js';
+import { calcularTotalEmisiones } from './calculator.js';
 
 
 // 1. Inicializamos los eventos de las pestañas
@@ -11,7 +12,14 @@ const contenedorPestañas = initEventosPestañas();
 // Nota: 'await' fuera de una función solo funciona en archivos type="module"
 const dataModelo = await fetchModelo();
 
-console.log(dataModelo.modelo.image); 
+console.log(dataModelo);
+
+
+
+
+
+const totalEmisiones = calcularTotalEmisiones(dataModelo.finVida.impactResults)
+console.log(totalEmisiones); 
 
 const contenedorTab = document.querySelector('#tab-content');
 

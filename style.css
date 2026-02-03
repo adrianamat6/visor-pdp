@@ -61,18 +61,37 @@ header {
 
 /*------------------------------------------------------------*/
 
-.content-container {
+.card-container {
     background-color: white;
     margin: 15px;
-    padding: 20px;
-    border-radius: 8px; /* Para darle el toque redondeado de la foto */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Sombra suave opcional */
-    color: #333;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    font-family: sans-serif;
 }
 
+.info-group {
+    margin-bottom: 15px;
+}
 
-.card-datos{
-    background-color: white; 
-    margin: 15px; 
-    color: gray; 
+.label-text {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.value-text {
+    display: block;
+    font-size: 18px;
+    color: #333;
+    margin-top: 4px;
+}
+
+.card-image {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+    display: block;
 }
