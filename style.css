@@ -112,7 +112,7 @@ header {
    MEDIA QUERY: VERSIÓN ESCRITORIO / PC
    (Se activa solo si la pantalla mide más de 1024px)
    ========================================= */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 700px) {
 
     /* 1. CENTRAR LA APP Y LIMITAR EL ANCHO 
        Esto evita que se estire de lado a lado. Parecerá una hoja centrada. */
@@ -212,3 +212,4 @@ header {
         font-size: 13px;
     }
 }
+
