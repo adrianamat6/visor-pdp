@@ -20,11 +20,11 @@ const crearGrupoInfo = (label, valor) => {
 function vistaGeneral(data) {
     const card = document.createElement('div');
     card.className = 'card-container';
-    
-    //Definimos "undefined" como valor inicial por defecto
-    let fechaLegible = "undefined"; 
+    card.innerHTML = `<h2>INFORMACIÓN GENERAL</h2>`;
+
+    // 1. Lógica de Fecha (Blindada)
+    let fechaLegible = "No disponible"; 
     try {
-        // Usamos ?. para verificar si existen los datos antes de intentar convertir la fecha
         if (data?.modelo?.studyPeriodFinish) {
             fechaLegible = new Date(data.modelo.studyPeriodFinish).toLocaleDateString('es-ES', { 
                 day: '2-digit', 
@@ -33,36 +33,46 @@ function vistaGeneral(data) {
             });
         }
     } catch (error) {
-        // Si ocurre cualquier error, forzamos que el texto sea "undefined"
-        fechaLegible = "undefined";
+        fechaLegible = "No disponible";
     }
     
+    // 2. Lógica de Emisiones (Blindada)
     let totalCO2;
-
     try {
-        // Intentamos realizar el cálculo
-        totalCO2 = calcularTotalEmisiones(data.finVida.impactResults);
+        if (data?.finVida?.impactResults) {
+            totalCO2 = calcularTotalEmisiones(data.finVida.impactResults);
+        }
     } catch (error) {
-        // Si algo falla (ej: finVida es null), asignamos undefined
-        console.warn("⚠️ No se pudieron calcular las emisiones:", error.message);
+        console.warn("⚠️ Error en cálculo de emisiones:", error.message);
         totalCO2 = undefined;
-}
+    }
 
+    // 3. Datos Principales
     card.appendChild(crearGrupoInfo('COMPAÑÍA:', data?.modelo?.company ?? 'No disponible'));
     card.appendChild(crearGrupoInfo('MODELO:', data?.modelo?.name ?? 'No disponible'));
     
+    // 4. Lógica de Imagen (Usando placeholder si falla)
     const img = document.createElement('img');
-    img.src = data.modelo.image;
+    // Si no hay imagen en el JSON, usa este placeholder gris
+    const imagenPorDefecto = "https://placehold.co/400x400/f9f9f9/cccccc?text=Imagen+no+disponible";
+    img.src = data?.modelo?.image ?? imagenPorDefecto; 
     img.className = 'card-image';
+    img.alt = 'Imagen del calzado';
+    
+    // Si la URL del JSON da error 404, cargamos la de por defecto
+    img.onerror = () => { img.src = imagenPorDefecto; };
+    
     card.appendChild(img);
 
+    // 5. Datos Técnicos
+    const peso = data?.modelo?.totalWeightPair ? `${data.modelo.totalWeightPair} g` : 'No disponible';
+    const tipo = data?.modelo?.productType ?? 'No disponible';
+    const emisiones = (totalCO2 !== undefined) ? `${totalCO2} kg CO₂ eq` : 'No disponible';
 
-    card.appendChild(crearGrupoInfo('PESO TOTAL:', `${data.modelo.totalWeightPair} g`));
-    card.appendChild(crearGrupoInfo('TIPO CALZADO:', `${data.modelo.productType}`));
-    card.appendChild(crearGrupoInfo('EMISIONES TOTALES:', `${totalCO2} kg CO₂ eq`));
+    card.appendChild(crearGrupoInfo('PESO TOTAL:', peso));
+    card.appendChild(crearGrupoInfo('TIPO CALZADO:', tipo));
+    card.appendChild(crearGrupoInfo('EMISIONES TOTALES:', emisiones));
     card.appendChild(crearGrupoInfo('FECHA:', fechaLegible));
-
-
 
     return card;
 }
