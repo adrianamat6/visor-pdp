@@ -160,9 +160,8 @@ header {
     /* 2. CONTENEDOR DE DATOS (1 Columna limpia) */
     .card-container {
         display: grid;
-        grid-template-columns: 1fr; /* Una sola columna */
-        row-gap: 15px;
-        padding: 40px;
+        grid-template-columns: 1fr; /* Una columna como pediste */
+        padding: 60px 100px;        /* Mucho aire a los lados para que sea elegante */
         background-color: #fff;
         margin-top: 20px;
     }
