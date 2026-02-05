@@ -109,13 +109,13 @@ header {
 
 
 /* =========================================
-   MEDIA QUERY: PANTALLA GRANDE (1 SOLA COLUMNA)
+   MEDIA QUERY: VERSIÓN ESCRITORIO (Diseño limpio con Marco)
    ========================================= */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 768px) {
 
-    /* 1. ESTRUCTURA: Centramos una "hoja" más ancha */
+    /* 1. ESTRUCTURA BÁSICA */
     body {
-        background-color: #e5e7eb; /* Gris de fondo un poco más oscuro para resaltar la ficha */
+        background-color: #e0e0e0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -123,95 +123,89 @@ header {
     }
 
     header, nav, main {
-        max-width: 850px; /* Ancho de "Ficha Técnica". Ni muy estrecho ni muy ancho */
+        max-width: 700px; /* Ancho ideal de lectura */
         width: 100%;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
     }
 
-    /* 2. CABECERA Y LOGO */
     header {
         background-color: #000;
         display: flex;
         justify-content: center;
-        padding: 25px 0;
-        border-radius: 8px 8px 0 0; /* Un poco de redondeado arriba */
+        padding: 15px 0;
     }
 
     .img-logo {
-        height: 60px;
         width: auto;
+        max-height: 70px;
+        object-fit: contain;
     }
 
-    /* 3. NAVEGACIÓN (Pestañas más grandes) */
     .tabs-container {
+        justify-content: center;
         background-color: #fff;
-        border-bottom: 1px solid #eee;
+        text-align: center;
     }
     
     .tabs-list {
+        display: inline-flex;
         justify-content: center;
-        gap: 15px;
     }
 
     .tab-item {
-        font-size: 15px;
-        padding: 20px 30px;
-        font-weight: 600;
+        font-size: 14px;
+        padding: 18px 25px;
     }
 
-    /* 4. CONTENIDO (1 SOLA COLUMNA) */
+    /* 2. CONTENEDOR DE DATOS (1 Columna limpia) */
     .card-container {
         display: grid;
-        grid-template-columns: 1fr; /* Una columna como pediste */
-        padding: 60px 100px;        /* Mucho aire a los lados para que sea elegante */
+        grid-template-columns: 1fr; /* Una sola columna */
+        row-gap: 15px;
+        padding: 40px;
         background-color: #fff;
-        margin-top: 0;
+        margin-top: 20px;
     }
 
-    /* 5. EL MARCO DE LA IMAGEN (Recuadro destacado) */
+    /* 3. ESTILO DE LA IMAGEN (EL RECUADRO) */
     .card-image {
+        /* Tamaño y centrado */
         width: 100%;
-        max-width: 500px; /* Imagen más grande en PC */
+        max-width: 400px;  /* Controlamos que no sea gigante */
         height: auto;
-        margin: 40px auto; 
+        margin: 25px auto; /* Centrado horizontal */
         display: block;
-
-        /* EL RECUADRO */
-        background-color: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 20px;
-        padding: 50px; /* Más espacio dentro del marco */
+        
+        /* EL MARCO / RECUADRO */
+        background-color: #f9f9f9; /* Fondo gris muy clarito */
+        border: 1px solid #eeeeee; /* Borde sutil */
+        border-radius: 12px;       /* Esquinas redondeadas */
+        padding: 40px;             /* Espacio entre el zapato y el borde */
+        
         object-fit: contain;
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.02);
     }
 
-    /* 6. TEXTOS (Más grandes para que no parezca móvil) */
+    /* 4. AJUSTES DE TEXTO */
+    .card-container h2 {
+        font-size: 20px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        grid-column: 1 / -1;
+    }
+
+    /* Líneas separadoras suaves entre datos para que se vea ordenado */
     .info-group {
-        border-bottom: 1px solid #f3f4f6;
-        padding: 20px 0; /* Más separación vertical entre datos */
+        border-bottom: 1px solid #f5f5f5;
+        padding-bottom: 10px;
     }
-
-    .label-text {
-        font-size: 13px;
-        letter-spacing: 1px;
-        color: #9ca3af;
-        margin-bottom: 8px;
+    
+    .info-group:last-child {
+        border-bottom: none;
     }
 
     .value-text {
-        font-size: 22px; /* Valores grandes y potentes */
-        color: #111827;
-        font-weight: 500;
-    }
-
-    /* Títulos de secciones (Componentes, Fabricación...) */
-    .card-container h2 {
-        font-size: 24px;
-        margin-top: 30px;
-        margin-bottom: 20px;
-        border-bottom: 3px solid #000;
-        display: inline-block;
-        padding-bottom: 5px;
+        font-size: 18px;
+        color: #000;
     }
 }
-
