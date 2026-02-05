@@ -20,7 +20,6 @@ const crearGrupoInfo = (label, valor) => {
 function vistaGeneral(data) {
     const card = document.createElement('div');
     card.className = 'card-container';
-    card.classList.add('ficha-general'); 
     
     //Definimos "undefined" como valor inicial por defecto
     let fechaLegible = "undefined"; 
