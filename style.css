@@ -109,14 +109,11 @@ header {
 
 
 /* =========================================
-   MEDIA QUERY: VERSIÓN ESCRITORIO (Diseño Premium)
+   MEDIA QUERY: PANTALLA GRANDE (ESTILO DASHBOARD)
    ========================================= */
-/* =========================================
-   MEDIA QUERY: VERSIÓN ESCRITORIO (Diseño limpio con Marco)
-   ========================================= */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) { /* Subimos a 1024px para ordenadores */
 
-    /* 1. ESTRUCTURA BÁSICA */
+    /* 1. ESTRUCTURA ANCHA (1100px) */
     body {
         background-color: #e0e0e0;
         display: flex;
@@ -126,24 +123,26 @@ header {
     }
 
     header, nav, main {
-        max-width: 700px; /* Ancho ideal de lectura */
+        max-width: 1100px; /* ¡AQUÍ ESTÁ EL CAMBIO! Mucho más ancho */
         width: 100%;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1); 
     }
 
+    /* 2. CABECERA */
     header {
         background-color: #000;
         display: flex;
         justify-content: center;
-        padding: 15px 0;
+        padding: 20px 0;
     }
 
     .img-logo {
         width: auto;
-        max-height: 70px;
+        height: 60px;
         object-fit: contain;
     }
 
+    /* 3. PESTAÑAS (Más grandes para llenar espacio) */
     .tabs-container {
         justify-content: center;
         background-color: #fff;
@@ -151,64 +150,71 @@ header {
     }
     
     .tabs-list {
-        display: inline-flex;
+        display: flex; /* Flex para distribuir espacio */
         justify-content: center;
+        gap: 20px; /* Separación entre pestañas */
     }
 
     .tab-item {
-        font-size: 14px;
-        padding: 18px 25px;
+        font-size: 15px; /* Texto más grande */
+        padding: 20px 40px;
     }
 
-    /* 2. CONTENEDOR DE DATOS (1 Columna limpia) */
+    /* 4. CONTENEDOR DE DATOS (GRID DE 2 COLUMNAS) */
     .card-container {
         display: grid;
-        grid-template-columns: 1fr; /* Una sola columna */
-        row-gap: 15px;
-        padding: 40px;
+        grid-template-columns: 1fr 1fr; /* Dos columnas para llenar el ancho */
+        column-gap: 60px; /* Mucho espacio entre columnas */
+        row-gap: 30px;
+        padding: 50px 80px; /* Margen interno generoso */
         background-color: #fff;
-        margin-top: 20px;
+        margin-top: 0;
     }
 
-    /* 3. ESTILO DE LA IMAGEN (EL RECUADRO) */
+    /* 5. LA IMAGEN (CENTRAL Y PROTAGONISTA) */
+    /* Truco: Le decimos que ocupe las 2 columnas ("span 2") para que quede centrada */
     .card-image {
-        /* Tamaño y centrado */
+        grid-column: span 2; 
+        
         width: 100%;
-        max-width: 400px;  /* Controlamos que no sea gigante */
+        max-width: 500px; /* Imagen grande */
         height: auto;
-        margin: 25px auto; /* Centrado horizontal */
+        margin: 30px auto; /* Centrado automático */
         display: block;
-        
-        /* EL MARCO / RECUADRO */
-        background-color: #f9f9f9; /* Fondo gris muy clarito */
-        border: 1px solid #eeeeee; /* Borde sutil */
-        border-radius: 12px;       /* Esquinas redondeadas */
-        padding: 40px;             /* Espacio entre el zapato y el borde */
-        
+
+        /* EL RECUADRO ELEGANTE */
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 16px;
+        padding: 40px;
         object-fit: contain;
     }
 
-    /* 4. AJUSTES DE TEXTO */
-    .card-container h2 {
-        font-size: 20px;
+    /* 6. TÍTULOS Y ELEMENTOS ANCHOS */
+    /* Los títulos de sección también ocupan todo el ancho */
+    .card-container h2, 
+    .card-container > div[style*="background"], 
+    .card-container > div[style*="fff7ed"] {
+        grid-column: span 2;
         border-bottom: 2px solid #eee;
         padding-bottom: 10px;
-        margin-bottom: 10px;
-        grid-column: 1 / -1;
+        font-size: 22px;
     }
 
-    /* Líneas separadoras suaves entre datos para que se vea ordenado */
+    /* 7. ESTILO DE TEXTOS (Más grandes para pantalla grande) */
     .info-group {
-        border-bottom: 1px solid #f5f5f5;
+        border-bottom: 1px solid #f0f0f0;
         padding-bottom: 10px;
     }
-    
-    .info-group:last-child {
-        border-bottom: none;
+
+    .label-text {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 8px;
     }
 
     .value-text {
-        font-size: 18px;
+        font-size: 20px; /* Valor grande y legible */
         color: #000;
     }
 }
