@@ -21,7 +21,22 @@ function vistaGeneral(data) {
     const card = document.createElement('div');
     card.className = 'card-container';
 
-    const fechaLegible = new Date(data.modelo.studyPeriodFinish).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+    //Definimos "undefined" como valor inicial por defecto
+    let fechaLegible = "undefined"; 
+    try {
+        // Usamos ?. para verificar si existen los datos antes de intentar convertir la fecha
+        if (data?.modelo?.studyPeriodFinish) {
+            fechaLegible = new Date(data.modelo.studyPeriodFinish).toLocaleDateString('es-ES', { 
+                day: '2-digit', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+        }
+    } catch (error) {
+        // Si ocurre cualquier error, forzamos que el texto sea "undefined"
+        fechaLegible = "undefined";
+    }
+    
     const totalCO2 = calcularTotalEmisiones(data.finVida.impactResults);
 
     card.appendChild(crearGrupoInfo('COMPAÑÍA:', data.modelo.company));
