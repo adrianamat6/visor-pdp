@@ -48,8 +48,8 @@ function vistaGeneral(data) {
         totalCO2 = undefined;
 }
 
-    card.appendChild(crearGrupoInfo('COMPAÑÍA:', data.modelo.company));
-    card.appendChild(crearGrupoInfo('MODELO:', data.modelo.name));
+    card.appendChild(crearGrupoInfo('COMPAÑÍA:', data?.modelo?.company ?? 'No disponible'));
+    card.appendChild(crearGrupoInfo('MODELO:', data?.modelo?.name ?? 'No disponible'));
     
     const img = document.createElement('img');
     img.src = data.modelo.image;
