@@ -111,28 +111,24 @@ header {
 /* =========================================
    MEDIA QUERY: VERSIÓN ESCRITORIO (Diseño Premium)
    ========================================= */
+/* =========================================
+   MEDIA QUERY: VERSIÓN ESCRITORIO (Diseño limpio con Marco)
+   ========================================= */
 @media screen and (min-width: 768px) {
 
-    /* 1. FONDO Y POSICIÓN */
+    /* 1. ESTRUCTURA BÁSICA */
     body {
-        background-color: #f0f2f5; /* Un gris azulado más moderno */
+        background-color: #e0e0e0;
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
     }
 
-    /* 2. CONTENEDOR PRINCIPAL (La "Hoja") */
     header, nav, main {
-        max-width: 600px; /* Ancho controlado para lectura vertical perfecta */
+        max-width: 700px; /* Ancho ideal de lectura */
         width: 100%;
-    }
-
-    /* Sombra suave y bordes redondeados para el contenido */
-    main {
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
-        border-radius: 0 0 12px 12px;
-        overflow: hidden; /* Para que nada se salga de los bordes redondos */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
     }
 
     header {
@@ -140,19 +136,17 @@ header {
         display: flex;
         justify-content: center;
         padding: 15px 0;
-        margin-top: 20px; /* Separado un poco del techo del navegador */
-        border-radius: 12px 12px 0 0; /* Redondeado solo arriba */
     }
 
     .img-logo {
-        height: 50px; 
         width: auto;
+        max-height: 70px;
+        object-fit: contain;
     }
 
-    /* 3. PESTAÑAS */
     .tabs-container {
-        background: #fff;
-        border-bottom: 1px solid #eee;
+        justify-content: center;
+        background-color: #fff;
         text-align: center;
     }
     
@@ -162,96 +156,59 @@ header {
     }
 
     .tab-item {
-        font-size: 13px;
-        letter-spacing: 0.5px;
+        font-size: 14px;
         padding: 18px 25px;
-        color: #888;
-    }
-    
-    .tab-item.active {
-        color: #000;
-        border-bottom: 3px solid #000;
     }
 
-    /* 4. CONTENEDOR DE LA FICHA (Grid 1 columna) */
+    /* 2. CONTENEDOR DE DATOS (1 Columna limpia) */
     .card-container {
-        display: flex;       /* Flex funciona mejor que Grid para lista vertical simple */
-        flex-direction: column;
-        padding: 40px 50px;  /* Buen margen interno */
+        display: grid;
+        grid-template-columns: 1fr; /* Una sola columna */
+        row-gap: 15px;
+        padding: 40px;
         background-color: #fff;
-        margin: 0;           /* Quitamos márgenes externos */
-        border-radius: 0;    /* El borde lo da el main */
-        box-shadow: none;    /* Quitamos sombra interna */
+        margin-top: 20px;
     }
 
-    /* 5. EL ENCABEZADO (Compañía y Modelo) */
-    /* Truco: Los dos primeros elementos info-group los centramos */
-    .card-container > .info-group:nth-child(1),
-    .card-container > .info-group:nth-child(2) {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    /* Hacemos el modelo (2º elemento) más grande */
-    .card-container > .info-group:nth-child(2) .value-text {
-        font-size: 24px;
-        font-weight: 700;
-        color: #000;
-        margin-top: 5px;
-    }
-
-    /* 6. LA IMAGEN (El "Recuadro" Estético) */
+    /* 3. ESTILO DE LA IMAGEN (EL RECUADRO) */
     .card-image {
-        order: 3; /* Aseguramos que quede después del título visualmente */
+        /* Tamaño y centrado */
         width: 100%;
-        max-width: 100%;
+        max-width: 400px;  /* Controlamos que no sea gigante */
         height: auto;
-        margin: 30px 0;
+        margin: 25px auto; /* Centrado horizontal */
+        display: block;
         
-        /* ESTILO MARCO/RECUADRO */
-        background-color: #f8f9fa; /* Fondo gris muy clarito */
-        border: 1px solid #e9ecef; /* Borde sutil */
-        border-radius: 16px;       /* Bordes redondeados */
-        padding: 40px;             /* Espacio interior para que el zapato "respire" */
+        /* EL MARCO / RECUADRO */
+        background-color: #f9f9f9; /* Fondo gris muy clarito */
+        border: 1px solid #eeeeee; /* Borde sutil */
+        border-radius: 12px;       /* Esquinas redondeadas */
+        padding: 40px;             /* Espacio entre el zapato y el borde */
+        
         object-fit: contain;
-        
-        /* Sombra interna sutil para dar profundidad */
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.03); 
     }
 
-    /* 7. LISTA DE DATOS (Fluidez) */
+    /* 4. AJUSTES DE TEXTO */
+    .card-container h2 {
+        font-size: 20px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        grid-column: 1 / -1;
+    }
+
+    /* Líneas separadoras suaves entre datos para que se vea ordenado */
     .info-group {
-        padding: 15px 0;
-        border-bottom: 1px solid #f0f0f0;
-        transition: all 0.3s ease; /* LA CLAVE DE LA FLUIDEZ */
-    }
-
-    /* Efecto al pasar el ratón por un dato */
-    .info-group:hover {
-        padding-left: 10px;       /* Se mueve un poco a la derecha */
-        background-color: #fafafa; /* Se ilumina un poco */
-        border-color: #ddd;
+        border-bottom: 1px solid #f5f5f5;
+        padding-bottom: 10px;
     }
     
-    .label-text {
-        font-size: 11px;
-        letter-spacing: 1px;
-        color: #999;
-        margin-bottom: 5px;
+    .info-group:last-child {
+        border-bottom: none;
     }
 
     .value-text {
-        font-size: 16px;
-        color: #333;
-        font-weight: 500;
-    }
-    
-    /* Excepciones para títulos dentro de otras pestañas */
-    .card-container h2 {
         font-size: 18px;
-        margin-top: 20px;
-        border-bottom: 2px solid #000;
-        display: inline-block;
-        padding-bottom: 5px;
+        color: #000;
     }
 }
