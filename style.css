@@ -109,13 +109,13 @@ header {
 
 
 /* =========================================
-   MEDIA QUERY: PANTALLA GRANDE (ESTILO DASHBOARD)
+   MEDIA QUERY: PANTALLA GRANDE (1 SOLA COLUMNA)
    ========================================= */
-@media screen and (min-width: 1024px) { /* Subimos a 1024px para ordenadores */
+@media screen and (min-width: 1024px) {
 
-    /* 1. ESTRUCTURA ANCHA (1100px) */
+    /* 1. ESTRUCTURA: Centramos una "hoja" más ancha */
     body {
-        background-color: #e0e0e0;
+        background-color: #e5e7eb; /* Gris de fondo un poco más oscuro para resaltar la ficha */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -123,98 +123,95 @@ header {
     }
 
     header, nav, main {
-        max-width: 1100px; /* ¡AQUÍ ESTÁ EL CAMBIO! Mucho más ancho */
+        max-width: 850px; /* Ancho de "Ficha Técnica". Ni muy estrecho ni muy ancho */
         width: 100%;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.1); 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
     }
 
-    /* 2. CABECERA */
+    /* 2. CABECERA Y LOGO */
     header {
         background-color: #000;
         display: flex;
         justify-content: center;
-        padding: 20px 0;
+        padding: 25px 0;
+        border-radius: 8px 8px 0 0; /* Un poco de redondeado arriba */
     }
 
     .img-logo {
-        width: auto;
         height: 60px;
-        object-fit: contain;
+        width: auto;
     }
 
-    /* 3. PESTAÑAS (Más grandes para llenar espacio) */
+    /* 3. NAVEGACIÓN (Pestañas más grandes) */
     .tabs-container {
-        justify-content: center;
         background-color: #fff;
-        text-align: center;
+        border-bottom: 1px solid #eee;
     }
     
     .tabs-list {
-        display: flex; /* Flex para distribuir espacio */
         justify-content: center;
-        gap: 20px; /* Separación entre pestañas */
+        gap: 15px;
     }
 
     .tab-item {
-        font-size: 15px; /* Texto más grande */
-        padding: 20px 40px;
+        font-size: 15px;
+        padding: 20px 30px;
+        font-weight: 600;
     }
 
-    /* 4. CONTENEDOR DE DATOS (GRID DE 2 COLUMNAS) */
+    /* 4. CONTENIDO (1 SOLA COLUMNA) */
     .card-container {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Dos columnas para llenar el ancho */
-        column-gap: 60px; /* Mucho espacio entre columnas */
-        row-gap: 30px;
-        padding: 50px 80px; /* Margen interno generoso */
+        grid-template-columns: 1fr; /* Una columna como pediste */
+        padding: 60px 100px;        /* Mucho aire a los lados para que sea elegante */
         background-color: #fff;
         margin-top: 0;
     }
 
-    /* 5. LA IMAGEN (CENTRAL Y PROTAGONISTA) */
-    /* Truco: Le decimos que ocupe las 2 columnas ("span 2") para que quede centrada */
+    /* 5. EL MARCO DE LA IMAGEN (Recuadro destacado) */
     .card-image {
-        grid-column: span 2; 
-        
         width: 100%;
-        max-width: 500px; /* Imagen grande */
+        max-width: 500px; /* Imagen más grande en PC */
         height: auto;
-        margin: 30px auto; /* Centrado automático */
+        margin: 40px auto; 
         display: block;
 
-        /* EL RECUADRO ELEGANTE */
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 16px;
-        padding: 40px;
+        /* EL RECUADRO */
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 50px; /* Más espacio dentro del marco */
         object-fit: contain;
+        box-shadow: inset 0 0 15px rgba(0,0,0,0.02);
     }
 
-    /* 6. TÍTULOS Y ELEMENTOS ANCHOS */
-    /* Los títulos de sección también ocupan todo el ancho */
-    .card-container h2, 
-    .card-container > div[style*="background"], 
-    .card-container > div[style*="fff7ed"] {
-        grid-column: span 2;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 10px;
-        font-size: 22px;
-    }
-
-    /* 7. ESTILO DE TEXTOS (Más grandes para pantalla grande) */
+    /* 6. TEXTOS (Más grandes para que no parezca móvil) */
     .info-group {
-        border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 10px;
+        border-bottom: 1px solid #f3f4f6;
+        padding: 20px 0; /* Más separación vertical entre datos */
     }
 
     .label-text {
-        font-size: 14px;
-        color: #666;
+        font-size: 13px;
+        letter-spacing: 1px;
+        color: #9ca3af;
         margin-bottom: 8px;
     }
 
     .value-text {
-        font-size: 20px; /* Valor grande y legible */
-        color: #000;
+        font-size: 22px; /* Valores grandes y potentes */
+        color: #111827;
+        font-weight: 500;
+    }
+
+    /* Títulos de secciones (Componentes, Fabricación...) */
+    .card-container h2 {
+        font-size: 24px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #000;
+        display: inline-block;
+        padding-bottom: 5px;
     }
 }
+
