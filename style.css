@@ -113,34 +113,36 @@ header {
    ========================================= */
 @media screen and (min-width: 768px) {
 
-    /* --- BASE (Igual que antes) --- */
+    /* 1. ESTRUCTURA PRINCIPAL */
     body {
         background-color: #e0e0e0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 150vh;
+        min-height: 100vh; /* 100vh es suficiente, 150vh dejaba mucho hueco abajo */
     }
 
     header, nav, main {
-        max-width: 800px; 
+        max-width: 700px; /* Un poco más estrecho (700px) para que sea más fácil de leer en 1 columna */
         width: 100%;
-        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* Sombra más suave */
     }
 
+    /* 2. CABECERA */
     header {
         background-color: #000;
         display: flex;
         justify-content: center;
-        padding: 10px 0;
+        padding: 15px 0;
     }
 
     .img-logo {
         width: auto;
-        max-height: 80px;
+        max-height: 70px; /* Logo controlado */
         object-fit: contain;
     }
 
+    /* 3. PESTAÑAS */
     .tabs-container {
         justify-content: center;
         background-color: #fff;
@@ -153,35 +155,57 @@ header {
     }
 
     .tab-item {
-        font-size: 13px;
-        padding: 15px 25px;
+        font-size: 14px;
+        padding: 18px 25px;
     }
 
-    /* --- GRID POR DEFECTO (Para Componentes, Fabricación, etc) --- */
+    /* 4. CONTENEDOR DE DATOS (LA CLAVE: 1 COLUMNA) */
     .card-container {
         display: grid;
-        grid-template-columns: 1fr;
-        column-gap: 30px;
-        row-gap: 20px;
-        align-items: start;
-        padding: 30px;
+        grid-template-columns: 1fr; /* UNA SOLA COLUMNA */
+        row-gap: 20px;    /* Espacio entre cada dato */
+        padding: 40px;    /* Más aire interno */
         margin-top: 20px;
     }
 
-    /* Reglas generales para títulos y cajas anchas */
-    .card-container h2,
-    .card-container > div[style*="background"],
-    .card-container > div[style*="fff7ed"] {
-        grid-column: 1 / -1; 
+    /* Estilo para los títulos de sección dentro de las tarjetas */
+    .card-container h2 {
+        font-size: 20px;
         border-bottom: 2px solid #eee;
-        padding-bottom: 8px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        color: #000;
     }
 
-    .value-text { font-size: 18px; }
-
-    .card-image{
-        max-width: 20vw;      /* 100% del ancho de la ventana visual */
-        height: auto;      /* Mantiene la proporción original */
+    /* 5. IMAGEN DEL PRODUCTO (Centrada y controlada) */
+    .card-image {
+        width: 100%;       
+        max-width: 350px;  /* Nunca será más ancha que 350px (tamaño folio/foto) */
+        height: auto;
+        display: block;
+        margin: 20px auto; /* ESTO CENTRA LA IMAGEN HORIZONTALMENTE */
         object-fit: contain;
-            }
+    }
+
+    /* 6. MEJORA DE TEXTOS */
+    /* Como es 1 columna, hacemos los textos un poco más grandes para llenar espacio */
+    .info-group {
+        border-bottom: 1px solid #f9f9f9; /* Línea sutil separadora entre datos */
+        padding-bottom: 10px;
+    }
+    
+    .info-group:last-child {
+        border-bottom: none;
+    }
+
+    .label-text {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 4px;
+    }
+
+    .value-text {
+        font-size: 18px;
+        color: #222;
+    }
 }
