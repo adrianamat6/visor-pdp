@@ -16,13 +16,13 @@ async function iniciarApp() {
     }
 
 
-    console.log(dataModelo.finVida.impactResults.emissionsByPhase.values[3])
+    //console.log(dataModelo.finVida.impactResults.emissionsByPhase.values[3])
 
     // console.log(dataModelo.lote.embalaje.components)
 
     // console.log(dataModelo.durabilidad)
     // console.log(dataModelo.finVida)
-
+    console.log(dataModelo)
 }
 
 iniciarApp();

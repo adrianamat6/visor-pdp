@@ -21,7 +21,7 @@ export const fetchModelo = async () => {
 
     // 3. Si sigue sin haber ID, usamos el de prueba  // 4182ab45-11c2-4de0-b78c-767cbcdea357
     if (!id) {
-        id = "4182ab45-11c2-4de0-b78c-767cbcdea357";
+        id = "49c45c23-433c-4705-9f63-08e22f091262";
         console.log("⚠️ No se detectó ID en el QR. Usando ID de prueba.");
     }
 
@@ -49,3 +49,4 @@ export const fetchModelo = async () => {
         return null;
     }
 };
+

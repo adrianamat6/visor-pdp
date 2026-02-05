@@ -37,7 +37,16 @@ function vistaGeneral(data) {
         fechaLegible = "undefined";
     }
     
-    const totalCO2 = calcularTotalEmisiones(data.finVida.impactResults);
+    let totalCO2;
+
+    try {
+        // Intentamos realizar el cálculo
+        totalCO2 = calcularTotalEmisiones(data.finVida.impactResults);
+    } catch (error) {
+        // Si algo falla (ej: finVida es null), asignamos undefined
+        console.warn("⚠️ No se pudieron calcular las emisiones:", error.message);
+        totalCO2 = undefined;
+}
 
     card.appendChild(crearGrupoInfo('COMPAÑÍA:', data.modelo.company));
     card.appendChild(crearGrupoInfo('MODELO:', data.modelo.name));
