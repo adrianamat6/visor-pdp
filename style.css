@@ -109,107 +109,108 @@ header {
 
 
 /* =========================================
-   MEDIA QUERY: VERSIÓN ESCRITORIO / PC
-   (Se activa solo si la pantalla mide más de 1024px)
+   MEDIA QUERY: TABLET Y ESCRITORIO (>= 768px)
    ========================================= */
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 768px) {
 
-    /* 1. CENTRAR LA APP Y LIMITAR EL ANCHO 
-       Esto evita que se estire de lado a lado. Parecerá una hoja centrada. */
+    /* --- BASE (Igual que antes) --- */
     body {
-        background-color: #e0e0e0; /* Fondo gris más oscuro fuera de la app */
+        background-color: #e0e0e0;
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
     }
 
-    /* Forzamos que la cabecera, navegación y contenido tengan un ancho máximo */
     header, nav, main {
-        max-width: 900px; /* Ancho máximo agradable para leer */
+        max-width: 800px; 
         width: 100%;
-        box-shadow: 0 0 15px rgba(0,0,0,0.1); /* Sombra elegante a los lados */
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
     }
 
-    /* 2. ARREGLAR LA CABECERA Y EL LOGO */
     header {
         background-color: #000;
         display: flex;
-        justify-content: center; /* Logo centrado */
+        justify-content: center;
+        padding: 10px 0;
     }
 
     .img-logo {
-        width: auto;      /* Que no se estire al 100% del ancho */
-        max-height: 100px; /* Altura máxima para que no ocupe media pantalla */
+        width: auto;
+        max-height: 80px;
         object-fit: contain;
     }
 
-    /* 3. PESTAÑAS MÁS GRANDES Y CENTRADAS */
     .tabs-container {
         justify-content: center;
         background-color: #fff;
+        text-align: center;
     }
     
     .tabs-list {
-        width: 100%;
-        justify-content: center; /* Centrar los ítems del menú */
+        display: inline-flex;
+        justify-content: center;
     }
 
     .tab-item {
-        font-size: 14px; /* Texto un poco más grande en PC */
-        padding: 20px 30px;
+        font-size: 13px;
+        padding: 15px 25px;
     }
 
-    /* 4. REORGANIZACIÓN DE DATOS (LA MAGIA) 
-       Convertimos la lista vertical en una rejilla de 2 columnas */
+    /* --- GRID POR DEFECTO (Para Componentes, Fabricación, etc) --- */
     .card-container {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-        column-gap: 40px; /* Espacio horizontal entre datos */
-        row-gap: 20px;    /* Espacio vertical entre filas */
+        grid-template-columns: 1fr 1fr;
+        column-gap: 30px;
+        row-gap: 20px;
         align-items: start;
-        padding: 40px; /* Más margen interno */
+        padding: 30px;
+        margin-top: 20px;
     }
 
-    /* 5. EXCEPCIONES PARA QUE SE VEA BIEN LA REJILLA */
-    
-    /* Los títulos (h2) que ocupen todo el ancho (las 2 columnas) */
-    .card-container h2 {
-        grid-column: 1 / -1; 
-        font-size: 18px;
-        margin-top: 10px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-    }
-
-    /* La imagen del zapato (General) que ocupe todo el ancho y se centre */
-    .card-image {
-        grid-column: 1 / -1; /* Ocupar las 2 columnas */
-        width: auto;
-        max-width: 400px; /* Limitar tamaño */
-        max-height: 300px;
-        margin: 20px auto; /* Centrado horizontalmente */
-        display: block;
-    }
-
-    /* El bloque de "COMPOSICIÓN" (dentro de Componentes) que ocupe ancho completo */
-    .card-container > div[style*="background"] {
-         grid-column: 1 / -1;
-    }
-    
-    /* El bloque de "ESPECIFICACIONES DEL TRANSPORTE" también ancho completo */
+    /* Reglas generales para títulos y cajas anchas */
+    .card-container h2,
+    .card-container > div[style*="background"],
     .card-container > div[style*="fff7ed"] {
-         grid-column: 1 / -1;
+        grid-column: 1 / -1; 
+        border-bottom: 2px solid #eee;
+        padding-bottom: 8px;
     }
 
-    /* Aumentar un poco el tamaño de la letra de los valores */
-    .value-text {
-        font-size: 20px;
-        color: #000;
+    .value-text { font-size: 18px; }
+
+    /* =========================================================
+       FIX VISUAL GENERAL: DISEÑO "IMAGEN IZQ - DATOS DER"
+       ========================================================= */
+    
+    /* 1. Cambiamos la proporción: Columna Izq (40%) - Columna Der (60%) */
+    .card-container.ficha-general {
+        grid-template-columns: 40% 1fr; 
+        align-items: center; /* Centrar verticalmente */
+    }
+
+    /* 2. La Imagen: La forzamos a ir a la COLUMNA 1 y que ocupe todas las filas */
+    .ficha-general .card-image {
+        grid-column: 1;      /* Columna Izquierda */
+        grid-row: 1 / span 10; /* Ocupar altura de hasta 10 datos */
+        order: -1;           /* ¡TRUCO! Moverla visualmente al principio */
+        
+        width: 100%;         /* Que ocupe su hueco */
+        max-width: 100%;     
+        margin: 0;           /* Quitar margenes de centrado */
+        padding-right: 20px; /* Un poco de aire con el texto */
+    }
+
+    /* 3. Los Datos: Los forzamos a ir a la COLUMNA 2 */
+    .ficha-general .info-group {
+        grid-column: 2;      /* Columna Derecha */
+        margin-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0; /* Línea sutil separadora */
+        padding-bottom: 5px;
     }
     
-    .label-text {
-        font-size: 13px;
+    /* Quitamos el borde al último dato para que quede limpio */
+    .ficha-general .info-group:last-child {
+        border-bottom: none;
     }
 }
-
