@@ -109,43 +109,50 @@ header {
 
 
 /* =========================================
-   MEDIA QUERY: TABLET Y ESCRITORIO (>= 768px)
+   MEDIA QUERY: VERSIÓN ESCRITORIO (Diseño Premium)
    ========================================= */
 @media screen and (min-width: 768px) {
 
-    /* 1. ESTRUCTURA PRINCIPAL */
+    /* 1. FONDO Y POSICIÓN */
     body {
-        background-color: #e0e0e0;
+        background-color: #f0f2f5; /* Un gris azulado más moderno */
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vh; /* 100vh es suficiente, 150vh dejaba mucho hueco abajo */
+        min-height: 100vh;
     }
 
+    /* 2. CONTENEDOR PRINCIPAL (La "Hoja") */
     header, nav, main {
-        max-width: 700px; /* Un poco más estrecho (700px) para que sea más fácil de leer en 1 columna */
+        max-width: 600px; /* Ancho controlado para lectura vertical perfecta */
         width: 100%;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* Sombra más suave */
     }
 
-    /* 2. CABECERA */
+    /* Sombra suave y bordes redondeados para el contenido */
+    main {
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+        border-radius: 0 0 12px 12px;
+        overflow: hidden; /* Para que nada se salga de los bordes redondos */
+    }
+
     header {
         background-color: #000;
         display: flex;
         justify-content: center;
         padding: 15px 0;
+        margin-top: 20px; /* Separado un poco del techo del navegador */
+        border-radius: 12px 12px 0 0; /* Redondeado solo arriba */
     }
 
     .img-logo {
+        height: 50px; 
         width: auto;
-        max-height: 70px; /* Logo controlado */
-        object-fit: contain;
     }
 
     /* 3. PESTAÑAS */
     .tabs-container {
-        justify-content: center;
-        background-color: #fff;
+        background: #fff;
+        border-bottom: 1px solid #eee;
         text-align: center;
     }
     
@@ -155,57 +162,96 @@ header {
     }
 
     .tab-item {
-        font-size: 14px;
+        font-size: 13px;
+        letter-spacing: 0.5px;
         padding: 18px 25px;
-    }
-
-    /* 4. CONTENEDOR DE DATOS (LA CLAVE: 1 COLUMNA) */
-    .card-container {
-        display: grid;
-        grid-template-columns: 1fr; /* UNA SOLA COLUMNA */
-        row-gap: 20px;    /* Espacio entre cada dato */
-        padding: 40px;    /* Más aire interno */
-        margin-top: 20px;
-    }
-
-    /* Estilo para los títulos de sección dentro de las tarjetas */
-    .card-container h2 {
-        font-size: 20px;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-        color: #000;
-    }
-
-    /* 5. IMAGEN DEL PRODUCTO (Centrada y controlada) */
-    .card-image {
-        width: 100%;       
-        max-width: 350px;  /* Nunca será más ancha que 350px (tamaño folio/foto) */
-        height: auto;
-        display: block;
-        margin: 20px auto; /* ESTO CENTRA LA IMAGEN HORIZONTALMENTE */
-        object-fit: contain;
-    }
-
-    /* 6. MEJORA DE TEXTOS */
-    /* Como es 1 columna, hacemos los textos un poco más grandes para llenar espacio */
-    .info-group {
-        border-bottom: 1px solid #f9f9f9; /* Línea sutil separadora entre datos */
-        padding-bottom: 10px;
+        color: #888;
     }
     
-    .info-group:last-child {
-        border-bottom: none;
+    .tab-item.active {
+        color: #000;
+        border-bottom: 3px solid #000;
     }
 
+    /* 4. CONTENEDOR DE LA FICHA (Grid 1 columna) */
+    .card-container {
+        display: flex;       /* Flex funciona mejor que Grid para lista vertical simple */
+        flex-direction: column;
+        padding: 40px 50px;  /* Buen margen interno */
+        background-color: #fff;
+        margin: 0;           /* Quitamos márgenes externos */
+        border-radius: 0;    /* El borde lo da el main */
+        box-shadow: none;    /* Quitamos sombra interna */
+    }
+
+    /* 5. EL ENCABEZADO (Compañía y Modelo) */
+    /* Truco: Los dos primeros elementos info-group los centramos */
+    .card-container > .info-group:nth-child(1),
+    .card-container > .info-group:nth-child(2) {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Hacemos el modelo (2º elemento) más grande */
+    .card-container > .info-group:nth-child(2) .value-text {
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+        margin-top: 5px;
+    }
+
+    /* 6. LA IMAGEN (El "Recuadro" Estético) */
+    .card-image {
+        order: 3; /* Aseguramos que quede después del título visualmente */
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        margin: 30px 0;
+        
+        /* ESTILO MARCO/RECUADRO */
+        background-color: #f8f9fa; /* Fondo gris muy clarito */
+        border: 1px solid #e9ecef; /* Borde sutil */
+        border-radius: 16px;       /* Bordes redondeados */
+        padding: 40px;             /* Espacio interior para que el zapato "respire" */
+        object-fit: contain;
+        
+        /* Sombra interna sutil para dar profundidad */
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.03); 
+    }
+
+    /* 7. LISTA DE DATOS (Fluidez) */
+    .info-group {
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+        transition: all 0.3s ease; /* LA CLAVE DE LA FLUIDEZ */
+    }
+
+    /* Efecto al pasar el ratón por un dato */
+    .info-group:hover {
+        padding-left: 10px;       /* Se mueve un poco a la derecha */
+        background-color: #fafafa; /* Se ilumina un poco */
+        border-color: #ddd;
+    }
+    
     .label-text {
-        font-size: 13px;
-        color: #777;
-        margin-bottom: 4px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #999;
+        margin-bottom: 5px;
     }
 
     .value-text {
+        font-size: 16px;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    /* Excepciones para títulos dentro de otras pestañas */
+    .card-container h2 {
         font-size: 18px;
-        color: #222;
+        margin-top: 20px;
+        border-bottom: 2px solid #000;
+        display: inline-block;
+        padding-bottom: 5px;
     }
 }
