@@ -333,9 +333,19 @@ function vistaUso(data) {
     card.className = 'card-container';
     card.innerHTML = `<h2>VIDA ÚTIL Y DURABILIDAD</h2>`;
 
-    // Acceso directo a las rutas que confirmaste en consola
-    card.appendChild(crearGrupoInfo('Nº DE USOS ESTIMADOS:', `${(data.durabilidad.durability).toFixed(1)} usos`));
-    card.appendChild(crearGrupoInfo('DURABILIDAD DE REFERENCIA:', `${(data.durabilidad.durationService).toFixed(1)} usos`));
+    // Intentamos obtener los valores. Si no existen, 'valor' será undefined.
+    const usosEstimados = data?.durabilidad?.durability !== undefined 
+        ? `${data.durabilidad.durability.toFixed(1)} usos` 
+        : undefined;
+
+    const durabilidadRef = data?.durabilidad?.durationService !== undefined 
+        ? `${data.durabilidad.durationService.toFixed(1)} usos` 
+        : undefined;
+
+    // Pintamos los grupos de información
+    // Si pasas 'undefined' a crearGrupoInfo, asegúrate de que esa función lo gestione
+    card.appendChild(crearGrupoInfo('Nº DE USOS ESTIMADOS:', usosEstimados ?? 'No disponible'));
+    card.appendChild(crearGrupoInfo('DURABILIDAD DE REFERENCIA:', durabilidadRef ?? 'No disponible'));
 
     fragment.appendChild(card);
     return fragment;
@@ -343,21 +353,27 @@ function vistaUso(data) {
 
 
 // ------------------------------------------------------------------------------------
-function vistaFinVida(dataModelo) { // <--- Usamos dataModelo para que coincida con el resto
+function vistaFinVida(dataModelo) {
     const fragment = document.createDocumentFragment();
 
     const card = document.createElement('div');
     card.className = 'card-container';
     card.innerHTML = `<h2>FIN DE VIDA</h2>`;
 
-    // 1. Tipo de fin de vida: dataModelo.finVida.endOfLifeScenario.type
-    const tipoFinVida = dataModelo.finVida.endOfLifeScenario.type;
+    // 1. Tipo de fin de vida (con fallback)
+    const tipoFinVida = dataModelo?.finVida?.endOfLifeScenario?.type ?? 'No definido';
     card.appendChild(crearGrupoInfo('ESCENARIO:', tipoFinVida));
 
-    // 2. Emisiones asociadas: dataModelo.finVida.impactResults.emissionsByPhase.values[3]
-    // Según tu log, este objeto tiene la propiedad .value
-    const emisionesFin = dataModelo.finVida.impactResults.emissionsByPhase.values[3].value;
-    card.appendChild(crearGrupoInfo('EMISIONES ASOCIADAS:', `${emisionesFin.toFixed(2)} kg CO₂ eq`));
+    // 2. Emisiones asociadas con validación de array y valor numérico
+    // Accedemos con cuidado al índice [3]
+    const valorEmisiones = dataModelo?.finVida?.impactResults?.emissionsByPhase?.values?.[3]?.value;
+    
+    // Solo formateamos si es un número, si no, devolvemos undefined
+    const emisionesTexto = (typeof valorEmisiones === 'number') 
+        ? `${valorEmisiones.toFixed(2)} kg CO₂ eq` 
+        : 'Dato no disponible';
+
+    card.appendChild(crearGrupoInfo('EMISIONES ASOCIADAS:', emisionesTexto));
 
     fragment.appendChild(card);
     return fragment;
